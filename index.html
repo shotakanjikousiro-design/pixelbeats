@@ -1,16 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>PIXELBEATS — 画像工学 / 医療画像情報学 サウンドアーカイブ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;">
 <!--
   ============================================================
-  画像工学 / 医療画像情報学 サウンドアーカイブ — Google Sites 埋め込み用コード
+  画像工学 / 医療画像情報学 サウンドアーカイブ — 単独ページ版 (index.html)
   ============================================================
   【使い方】
-  1. このコード全体をコピー
-  2. Google Sites の編集画面で 挿入 → 埋め込み → 「コードを埋め込む」を選択
-  3. 貼り付けて「挿入」
+  1. このファイルを「index.html」という名前のまま GitHub Pages などの
+     無料ホスティングにアップロードして公開する
+  2. 公開URL（例 https://ユーザー名.github.io/pixelbeats/）を、まずブラウザで
+     直接ひらいて再生できることを確認する
+  3. 確認できたら、そのURLを Google Sites の
+     挿入 → 埋め込み → 「URL」タブ に貼り付けて挿入する
+
+  ※ Google Sites の「コードを埋め込む」に直接コードを貼る方式は、
+     サンドボックスの制限で YouTube がエラー153（Referer不達）になるため
+     使えません。必ずこの「ページを公開してURLで埋め込む」方式にしてください。
 
   【動画・歌詞の準備】※youtube が空欄の曲は「準備中」表示になります
   下の <script> 内、TRACKS という配列に14曲ぶんのデータがあります。
 
-    youtube   : YouTube動画のID（下記参照）。入れるとサムネイルが表示され、
+    youtube   : YouTube動画のID。入れるとサムネイルが表示され、
                 クリックでその場に動画プレーヤーが開いて再生されます。
     song      : 曲名（班がつけたタイトル）
     subject   : 単元名（授業テーマ）
@@ -681,9 +700,6 @@
   }
 </style>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
 
 <script>
 (function () {
@@ -991,13 +1007,7 @@
     return ifr;
   }
 
-  var playStartTimer = null; // API再生の開始を見張るタイマー
-  function clearPlayStartTimer() {
-    if (playStartTimer) { clearTimeout(playStartTimer); playStartTimer = null; }
-  }
-
   function buildPlainIframe(t, autoplay) {
-    clearPlayStartTimer();
     if (ytPlayer && ytPlayer.destroy) { try { ytPlayer.destroy(); } catch (e) {} }
     ytPlayer = null;
     stopLyricSync();
@@ -1009,34 +1019,40 @@
   // 指定した曲のプレーヤーを、カード内に「作り直して」再生する。
   // ※ YouTubeのiframeはDOM上で別の場所へ移動させると再読み込みされて
   //    APIとの接続が切れてしまうため、「移動」ではなく毎回作り直す方式。
+  // ※ プレーヤーは空のdivを渡してYouTube APIに生成させる標準方式。
+  //    自前iframeにAPIを後付け接続する方式は再生開始が不安定なため使わない。
   function createPlayerFor(t, autoplay) {
-    // すでにAPI再生が使えないと分かっている環境では、最初から素のiframeで再生
+    // 万一この方式で再生できない動画があれば、素のiframeへ切り替え済み
     if (forcePlainIframe) { buildPlainIframe(t, autoplay); return; }
 
-    clearPlayStartTimer();
     if (ytPlayer && ytPlayer.destroy) {
       try { ytPlayer.destroy(); } catch (e) {}
     }
     ytPlayer = null;
     playerHost.innerHTML = "";
+    var mount = document.createElement("div");
+    playerHost.appendChild(mount);
 
-    // (1)(2) referrerpolicy付きのiframeを自前で作り、それにAPIを接続する
-    var ifr = makeIframe(t, autoplay, true);
-    playerHost.appendChild(ifr);
-
-    var started = false;
-    ytPlayer = new YT.Player(ifr, {
+    ytPlayer = new YT.Player(mount, {
+      width: "100%",
+      height: "100%",
+      videoId: t.youtube,
+      playerVars: { playsinline: 1, rel: 0, modestbranding: 1, autoplay: autoplay ? 1 : 0 },
       events: {
+        onReady: function (e) {
+          // サムネイルのクリック（ユーザー操作）を起点に再生を明示的に開始する。
+          // playerVarのautoplayだけだと環境によっては0:00で止まるため、
+          // onReadyでも playVideo() を呼んで確実に再生を始める。
+          if (autoplay && e.target && e.target.playVideo) {
+            try { e.target.playVideo(); } catch (err) {}
+          }
+        },
         onStateChange: function (e) {
           // 1=再生中, 2=一時停止, 0=終了
           if (e.data === YT.PlayerState.PLAYING) {
-            started = true;
-            clearPlayStartTimer();
             setActiveCardUI(currentId, true);
             startLyricSync();
           } else if (e.data === YT.PlayerState.PAUSED) {
-            started = true;
-            clearPlayStartTimer();
             setActiveCardUI(currentId, false);
             stopLyricSync();
           } else if (e.data === YT.PlayerState.ENDED) {
@@ -1047,25 +1063,13 @@
           }
         },
         onError: function () {
-          // この方式では再生できないエラー。以降は素のiframe方式に切り替え、
-          // この曲もその場で再生し直す。
+          // この動画は埋め込みプレーヤーで再生できない（埋め込み不許可・
+          // 地域制限など）。素のiframeに切り替えて再生を試みる。
           forcePlainIframe = true;
           buildPlainIframe(t, autoplay);
         }
       }
     });
-
-    // (4) エラー153はAPIのonErrorに通知されないことがあるため、
-    //     自動再生を要求したのに数秒たっても再生が始まらなければ
-    //     「API再生が拒否された」とみなして素のiframeへ切り替える。
-    if (autoplay) {
-      playStartTimer = setTimeout(function () {
-        if (!started && !forcePlainIframe) {
-          forcePlainIframe = true;
-          buildPlainIframe(t, true);
-        }
-      }, 4000);
-    }
   }
 
   // 選択された曲を、そのカードのサムネイル枠内に埋め込んで再生する
@@ -1291,3 +1295,6 @@
   });
 })();
 </script>
+
+</body>
+</html>

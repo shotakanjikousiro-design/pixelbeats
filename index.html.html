@@ -1,0 +1,1293 @@
+<!--
+  ============================================================
+  画像工学 / 医療画像情報学 サウンドアーカイブ — Google Sites 埋め込み用コード
+  ============================================================
+  【使い方】
+  1. このコード全体をコピー
+  2. Google Sites の編集画面で 挿入 → 埋め込み → 「コードを埋め込む」を選択
+  3. 貼り付けて「挿入」
+
+  【動画・歌詞の準備】※youtube が空欄の曲は「準備中」表示になります
+  下の <script> 内、TRACKS という配列に14曲ぶんのデータがあります。
+
+    youtube   : YouTube動画のID（下記参照）。入れるとサムネイルが表示され、
+                クリックでその場に動画プレーヤーが開いて再生されます。
+    song      : 曲名（班がつけたタイトル）
+    subject   : 単元名（授業テーマ）
+    lyrics    : 歌詞のテキスト。入っている曲は「歌詞を見る」で
+                再生と連動して自動スクロールする歌詞パネルが開きます。
+
+  ▼ YouTube IDの調べ方（リンクの形ごと）
+    https://youtube.com/shorts/XXXXXXXXXXX?...   → 「shorts/」の後ろ XXXXXXXXXXX
+    https://youtu.be/XXXXXXXXXXX                 → 「youtu.be/」の後ろ XXXXXXXXXXX
+    https://www.youtube.com/watch?v=XXXXXXXXXXX  → 「v=」の後ろ XXXXXXXXXXX
+    ※ この11文字ぶんを youtube: "XXXXXXXXXXX" のように入れてください。
+    ※ 動画は「限定公開(Unlisted)」または「公開」にしておく必要があります
+      （「非公開(Private)」だと学生が再生できません）。
+
+  band（制作班）の欄も、実際の班名に書き換えてOKです。
+  ============================================================
+-->
+<div class="ies-stage" id="iesStage">
+
+  <div class="ies-noise" aria-hidden="true"></div>
+
+  <header class="ies-header">
+    <div class="ies-header-inner">
+      <div class="ies-eyebrow-row">
+        <p class="ies-eyebrow">IMAGE ENGINEERING × MEDICAL IMAGING INFORMATICS</p>
+        <span class="ies-sticker">14 TRACKS</span>
+      </div>
+      <h1 class="ies-title">PIXEL<span class="ies-title-accent">BEATS</span></h1>
+      <svg class="ies-wave" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,12 C15,2 35,2 50,12 C65,22 85,22 100,12 C115,2 135,2 150,12 C165,22 185,22 200,12 C215,2 235,2 250,12 C265,22 285,22 300,12 C315,2 335,2 350,12 C365,22 385,22 400,12" />
+      </svg>
+      <p class="ies-lead">画像工学・医療画像情報学 課題曲アーカイブ<br class="ies-br">各班が単元をテーマに制作した全14曲を、単元ごとに聴くことができます。</p>
+      <p class="ies-howto"><span class="ies-kbd ies-kbd-pink">▶ 再生</span><span class="ies-kbd ies-kbd-blue">歌詞を見る で歌詞をその場に表示</span></p>
+    </div>
+  </header>
+
+  <nav class="ies-nav" aria-label="単元へ移動">
+    <a href="#unit-01" class="ies-nav-chip" data-chip="1">UNIT 01 — 画像工学の基礎</a>
+    <a href="#unit-02" class="ies-nav-chip" data-chip="2">UNIT 02 — 画質を測る</a>
+    <a href="#unit-03" class="ies-nav-chip" data-chip="3">UNIT 03 — 評価と応用</a>
+  </nav>
+
+  <main class="ies-main" id="iesMain"></main>
+
+  <footer class="ies-footer">
+    <svg class="ies-wave ies-wave-footer" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,12 C15,2 35,2 50,12 C65,22 85,22 100,12 C115,2 135,2 150,12 C165,22 185,22 200,12 C215,2 235,2 250,12 C265,22 285,22 300,12 C315,2 335,2 350,12 C365,22 385,22 400,12" />
+    </svg>
+    <p>♪ 楽曲・歌詞は受講生が Gemini を用いて制作したものです。</p>
+    <p class="ies-footer-sub">画像工学 / 医療画像情報学 — 全14班</p>
+  </footer>
+
+  <div class="ies-modal" id="iesModal" aria-hidden="true">
+    <div class="ies-modal-backdrop" id="iesModalBackdrop"></div>
+    <div class="ies-modal-panel" role="dialog" aria-modal="true" aria-labelledby="iesModalTitle">
+      <div class="ies-modal-bar">
+        <span id="iesModalTitle" class="ies-modal-title"></span>
+        <button type="button" class="ies-modal-close" id="iesModalClose" aria-label="閉じる">×</button>
+      </div>
+      <iframe id="iesModalFrame" class="ies-modal-frame" title="歌詞PDF" src=""></iframe>
+      <a id="iesModalFallback" class="ies-modal-fallback" href="#" target="_blank" rel="noopener">表示されない場合はこちらから開く ↗</a>
+    </div>
+  </div>
+
+  <div class="ies-lyrics-sheet" id="iesLyricsSheet" aria-hidden="true">
+    <div class="ies-lyrics-head">
+      <div class="ies-lyrics-headtext">
+        <span class="ies-lyrics-song" id="iesLyricsSong"></span>
+        <span class="ies-lyrics-sub" id="iesLyricsSub"></span>
+      </div>
+      <button type="button" class="ies-sync-toggle is-on" id="iesSyncToggle">♪ 自動スクロール ON</button>
+      <button type="button" class="ies-lyrics-close" id="iesLyricsClose" aria-label="閉じる">×</button>
+    </div>
+    <div class="ies-lyrics-body" id="iesLyricsBody"></div>
+  </div>
+
+  <div class="ies-player" id="iesPlayerBar" aria-hidden="true">
+    <div class="ies-player-inner">
+      <div class="ies-player-info">
+        <span class="ies-player-no" id="iesPlayerNo">--</span>
+        <div class="ies-player-text">
+          <div class="ies-player-title" id="iesPlayerTitle">曲を選んでください</div>
+          <div class="ies-player-band" id="iesPlayerBand"></div>
+        </div>
+      </div>
+      <div class="ies-player-controls">
+        <button type="button" class="ies-player-btn" id="iesPrevBtn" aria-label="前の曲">⏮</button>
+        <button type="button" class="ies-player-btn" id="iesNextBtn" aria-label="次の曲">⏭</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .ies-stage {
+    --paper: #FFF8EC;
+    --card: #FFFFFF;
+    --ink: #221A33;
+    --pink: #FF4D8D;
+    --blue: #2F6FED;
+    --yellow: #FFC93C;
+    --violet: #8C52FF;
+    --line: rgba(34, 26, 51, 0.16);
+    --muted: rgba(34, 26, 51, 0.62);
+
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+    line-height: 1.7;
+    border-radius: 4px;
+
+    /* Googleサイトの埋め込み枠はスマホで高さが縮んで表示されることがあるため、
+       枠の高さに関わらず中身を最後まで見られるよう、この要素自体をスクロール領域にする */
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .ies-stage * { box-sizing: border-box; }
+
+  .ies-stage .ies-noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle, rgba(34,26,51,0.10) 1.4px, transparent 1.4px),
+      radial-gradient(circle at 14% 6%, rgba(255,77,141,0.16), transparent 40%),
+      radial-gradient(circle at 88% 4%, rgba(47,111,237,0.14), transparent 42%),
+      radial-gradient(circle at 92% 96%, rgba(255,201,60,0.18), transparent 40%);
+    background-size: 15px 15px, auto, auto, auto;
+  }
+
+  .ies-header, .ies-nav, .ies-main, .ies-footer { position: relative; z-index: 1; }
+
+  .ies-header {
+    padding: 52px 24px 30px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .ies-header-inner { max-width: 880px; margin: 0 auto; }
+
+  .ies-eyebrow-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .ies-eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--blue);
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .ies-sticker {
+    display: inline-block;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    background: var(--yellow);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 3px 11px;
+    transform: rotate(-4deg);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  .ies-title {
+    font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+    font-weight: 900;
+    font-size: clamp(40px, 8vw, 72px);
+    letter-spacing: 0.01em;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .ies-title-accent {
+    display: inline-block;
+    color: var(--pink);
+    transform: rotate(-3deg);
+  }
+
+  .ies-wave { display: block; width: 100%; max-width: 300px; height: 20px; margin: 4px 0 20px; }
+  .ies-wave path {
+    fill: none;
+    stroke: var(--pink);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 7 11;
+    animation: ies-wave-move 2.4s linear infinite;
+  }
+  .ies-wave-footer { max-width: 220px; margin: 0 auto 14px; opacity: 0.8; }
+  @keyframes ies-wave-move { to { stroke-dashoffset: -180px; } }
+
+  .ies-lead {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 46em;
+    margin: 0 0 18px;
+  }
+  .ies-br { display: none; }
+
+  .ies-howto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 12.5px;
+    margin: 0;
+  }
+  .ies-kbd {
+    font-family: "Noto Sans JP", sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 5px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    color: #fff;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .ies-kbd-pink { background: var(--pink); transform: rotate(-1.5deg); }
+  .ies-kbd-blue { background: var(--blue); transform: rotate(1.5deg); }
+
+  .ies-nav {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    gap: 8px;
+    padding: 12px 24px;
+    background: rgba(255,248,236,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 2px solid var(--ink);
+    overflow-x: auto;
+  }
+  .ies-nav-chip {
+    flex: none;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 7px 13px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    white-space: nowrap;
+    background: #fff;
+    transition: transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .ies-nav-chip[data-chip="1"]:hover { background: var(--blue); color: #fff; transform: translateY(-2px); }
+  .ies-nav-chip[data-chip="2"]:hover { background: var(--pink); color: #fff; transform: translateY(-2px); }
+  .ies-nav-chip[data-chip="3"]:hover { background: var(--violet); color: #fff; transform: translateY(-2px); }
+
+  .ies-main { max-width: 880px; margin: 0 auto; padding: 8px 24px 100px; }
+
+  .ies-unit { padding-top: 44px; scroll-margin-top: 60px; }
+  .ies-unit-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed var(--line);
+  }
+  .ies-unit-num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: #fff;
+    background: var(--blue);
+    border: 2px solid var(--ink);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .ies-unit[data-unit="1"] .ies-unit-head { border-bottom-color: var(--blue); }
+  .ies-unit[data-unit="2"] .ies-unit-head { border-bottom-color: var(--pink); }
+  .ies-unit[data-unit="3"] .ies-unit-head { border-bottom-color: var(--violet); }
+  .ies-unit[data-unit="2"] .ies-unit-num { background: var(--pink); }
+  .ies-unit[data-unit="3"] .ies-unit-num { background: var(--violet); }
+  .ies-unit-label { font-family: "Zen Maru Gothic", sans-serif; font-size: 20px; font-weight: 700; }
+  .ies-unit-range { margin-left: auto; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; color: var(--muted); }
+
+  .ies-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; }
+  @media (max-width: 620px) { .ies-grid { grid-template-columns: 1fr; } }
+
+  .ies-card {
+    --tilt: -1.1deg;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-top-width: 6px;
+    border-top-color: var(--blue);
+    border-radius: 16px;
+    padding: 14px 15px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    box-shadow: 5px 5px 0 var(--ink);
+    transform: rotate(var(--tilt));
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .ies-card:nth-child(even) { --tilt: 1.1deg; }
+  .ies-card:hover { transform: rotate(0deg) translateY(-3px); box-shadow: 7px 7px 0 var(--ink); }
+  .ies-unit[data-unit="2"] .ies-card { border-top-color: var(--pink); }
+  .ies-unit[data-unit="3"] .ies-card { border-top-color: var(--violet); }
+
+  .ies-card-top { display: flex; align-items: flex-start; gap: 10px; }
+  .ies-card-head-text { flex: 1; min-width: 0; }
+  .ies-card-no {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    padding-top: 3px;
+    flex: none;
+  }
+  .ies-card-title { font-size: 15px; font-weight: 700; line-height: 1.5; }
+  .ies-card-band { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+  .ies-eq {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 14px;
+    margin-left: auto;
+    padding-top: 4px;
+    flex: none;
+  }
+  .ies-eq span {
+    width: 3px;
+    border-radius: 1px;
+    height: 4px;
+    animation: ies-eqbar 0.9s ease-in-out infinite;
+    animation-play-state: paused;
+    opacity: 0.4;
+  }
+  .ies-eq span:nth-child(1) { background: var(--pink); animation-delay: 0s; }
+  .ies-eq span:nth-child(2) { background: var(--blue); animation-delay: .15s; }
+  .ies-eq span:nth-child(3) { background: var(--yellow); animation-delay: .3s; }
+  .ies-eq span:nth-child(4) { background: var(--violet); animation-delay: .45s; }
+  .ies-card.is-playing .ies-eq span { animation-play-state: running; opacity: 1; }
+  @keyframes ies-eqbar {
+    0%, 100% { height: 4px; }
+    50% { height: 14px; }
+  }
+
+  .ies-video-wrap { position: relative; }
+  .ies-thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #000;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .ies-thumb:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+  .ies-thumb-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Shorts縦動画のサムネイル中央をうまく見せる */
+    object-position: center;
+  }
+  /* サムネイル画像が取得できなかったとき（Shortsや広告ブロッカー等）は
+     画像を隠し、黒背景＋再生ボタンだけのタイルとして見せる */
+  .ies-thumb-img.is-broken { display: none; }
+  .ies-thumb.is-noimg {
+    background:
+      radial-gradient(circle at 50% 42%, rgba(255,77,141,0.28), transparent 60%),
+      var(--ink);
+  }
+  .ies-thumb-play {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 62px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    transition: transform .12s ease;
+  }
+  .ies-thumb:hover .ies-thumb-play { transform: translate(-50%, -50%) scale(1.08); }
+  .ies-thumb-play svg { width: 100%; height: 100%; }
+  .ies-yt-btn { fill: #FF0000; }
+  .ies-thumb:hover .ies-yt-btn { fill: #ff2b2b; }
+
+  .ies-yt-host {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .ies-yt-host iframe { width: 100%; height: 100%; display: block; border: 0; }
+
+  .ies-open-yt {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 11.5px; font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: #fff;
+    transition: background .15s ease, color .15s ease;
+  }
+  .ies-open-yt:hover { background: var(--ink); color: #fff; }
+
+  .ies-pending {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    border: 2px dashed var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .ies-pending-video {
+    aspect-ratio: 16 / 9;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+  }
+  .ies-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ies-lyrics-btn {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--pink);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform .12s ease, box-shadow .12s ease, background .15s ease;
+  }
+  .ies-lyrics-btn:hover { background: var(--blue); transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .ies-lyrics-btn:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--ink); }
+  .ies-lyrics-btn:disabled {
+    background: transparent; color: var(--muted); border: 2px dashed var(--line);
+    box-shadow: none; cursor: not-allowed;
+  }
+
+  .ies-footer {
+    text-align: center;
+    padding: 30px 24px 46px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 2px solid var(--ink);
+    margin-top: 26px;
+  }
+  .ies-footer p { margin: 3px 0; }
+  .ies-footer-sub { font-family: "JetBrains Mono", ui-monospace, monospace; letter-spacing: 0.04em; }
+
+  /* modal */
+  .ies-modal { position: fixed; inset: 0; z-index: 50; display: none; }
+  .ies-modal.is-open { display: block; }
+  .ies-modal-backdrop { position: absolute; inset: 0; background: rgba(34,26,51,0.55); }
+  .ies-modal-panel {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    height: 86vh;
+    margin: 5vh auto;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 7px 7px 0 var(--ink);
+  }
+  .ies-modal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--ink);
+    background: var(--yellow);
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .ies-modal-close {
+    background: none; border: none; color: var(--ink);
+    font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 6px;
+  }
+  .ies-modal-close:hover { color: var(--pink); }
+  .ies-modal-frame { flex: 1; width: 100%; border: none; background: #fff; }
+  .ies-modal-fallback {
+    display: block;
+    text-align: center;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--blue);
+    padding: 8px;
+    text-decoration: none;
+    border-top: 2px solid var(--ink);
+  }
+
+  .ies-stage :focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+
+  /* now-playing bar */
+  .ies-player {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 46;
+    background: var(--ink);
+    border-top: 2px solid var(--ink);
+    box-shadow: 0 -4px 0 rgba(34,26,51,0.08);
+    transform: translateY(100%);
+    transition: transform .25s ease;
+  }
+  .ies-player.is-active { transform: translateY(0); }
+  .ies-player-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ies-player-info { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+  .ies-player-no {
+    flex: none;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--yellow);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 3px 8px;
+  }
+  .ies-player-text { min-width: 0; }
+  .ies-player-title {
+    font-size: 13px; font-weight: 700; color: #fff;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .ies-player-band { font-size: 11px; color: rgba(255,255,255,0.6); }
+  .ies-player-controls { display: flex; align-items: center; gap: 6px; flex: none; }
+  .ies-player-btn {
+    font-size: 16px;
+    background: var(--pink);
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 999px;
+    width: 34px; height: 34px;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform .1s ease, background .15s ease;
+  }
+  .ies-player-btn:hover { background: var(--blue); }
+  .ies-player-btn:active { transform: scale(0.92); }
+  .ies-player-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  @media (max-width: 480px) {
+    .ies-player-band { display: none; }
+  }
+
+  .ies-card.is-active-track { border-color: var(--pink); }
+  .ies-card-song {
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-size: 16px; font-weight: 900; line-height: 1.4;
+  }
+  .ies-card-subject {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 700;
+    color: var(--ink);
+    background: rgba(255,201,60,0.45);
+    border-radius: 999px;
+    padding: 1px 9px;
+    margin-top: 4px;
+  }
+
+  /* lyrics bottom sheet */
+  .ies-lyrics-sheet {
+    position: fixed;
+    left: 0; right: 0; bottom: 58px;
+    z-index: 45;
+    height: min(58vh, 480px);
+    background: #fff;
+    border-top: 3px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    box-shadow: 0 -6px 0 rgba(34,26,51,0.10);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(140%);
+    transition: transform .28s ease;
+  }
+  .ies-lyrics-sheet.is-open { transform: translateY(0); }
+  .ies-lyrics-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 2px dashed var(--line);
+    background: var(--paper);
+  }
+  .ies-lyrics-headtext { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+  .ies-lyrics-song {
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-size: 14px; font-weight: 900; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .ies-lyrics-sub { font-size: 11px; color: var(--muted); }
+  .ies-sync-toggle {
+    flex: none;
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 11px; font-weight: 700;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 5px 11px;
+    cursor: pointer;
+    background: #fff;
+    color: var(--muted);
+    transition: background .15s ease, color .15s ease;
+  }
+  .ies-sync-toggle.is-on { background: var(--pink); color: #fff; }
+  .ies-lyrics-close {
+    flex: none;
+    background: none; border: none; color: var(--ink);
+    font-size: 22px; line-height: 1; cursor: pointer; padding: 2px 6px;
+  }
+  .ies-lyrics-close:hover { color: var(--pink); }
+  .ies-lyrics-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 22px 22px 120px;
+    font-size: 15px;
+    line-height: 2.05;
+    color: var(--ink);
+    scroll-behavior: auto;
+  }
+  .ies-lyrics-body .ies-ly-section {
+    display: inline-block;
+    font-size: 11.5px; font-weight: 700;
+    color: #fff;
+    background: var(--violet);
+    border-radius: 999px;
+    padding: 2px 12px;
+    margin: 14px 0 4px;
+  }
+  .ies-lyrics-body p { margin: 0; }
+  .ies-lyrics-body p.ies-ly-blank { height: 0.9em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ies-stage .ies-eq span,
+    .ies-stage .ies-wave path { animation: none !important; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+
+<script>
+(function () {
+  // ============================================================
+  // ここを編集してください（14曲ぶん）
+  // youtube が空欄の曲は動画が、lyrics が空欄の曲は歌詞が
+  // 自動で「準備中」表示になります
+  // ============================================================
+  var TRACKS = [
+    { id: 1, unit: 1, band: "第01班", subject: "画像工学の基礎", song: "波が紡ぐ医療の未来",
+      youtube: "C7xSL1EWkR4",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "1次元なら、「点と線」のストーリー。\n\n2次元になれば、平面彩る「ピクセル」。\n\n3次元までいけば、立体捉える「ボクセル」！\n\nそう、「画像はピクセルの集まり」なんだ。\n\n一見、ただの絵に見えてもね。\n\n実は画像って、「いろんな波の組み合わせ」！\n\n写したい範囲は、そう、「FOV」。\n\n「マトリックスサイズ」で、細かく分割すれば、\n\n導き出されるのは、「ピクセルサイズ」！\n\n滑らかさ決める、「階調数」も忘れずに。\n\n白から黒へのグラデーション、\n\n鮮やかに描き出せ。\n\nさあ、画像工学の、核心を掴むずら！\n\nアナログの波を、A/D変換。\n\nデジタルへ、変えるずら。\n\n振幅・周波数・位相を、\n\n紐解いていくずら！\n\n解像度と、ノイズのトレードオフも、\n\n乗り越えるずら！\n\n白黒はっきり。\n\n信号とデータを、繋ぐずら。\n\n正しい知識で、未来の医療を照らし出すずら！\n\n（間奏）\n\n現実のアナログを、「A/D変換」で取り込んで。\n\nモニタに映すときは、「D/A変換」の魔法！\n\n波の形を、詳しく紐解けば、\n\n「振幅・周波数・位相」で成り立っている！\n\n情報のサイズを、計算してみよう。\n\n「4階調」なら、「2ビット」。\n\n「256階調」なら、8ビット。\n\n8ビットは、1バイトになるずら。\n\n解き明かせ、\n\nフーリエの秘密を！\n\n「サイン波」が担うのは、虚数部のメロディ。\n\n原点対称・奇関数！\n\n「コサイン波」が担うのは、実数部のリズム。\n\n左右対称・偶関数！\n\n「低周波成分」が、豊かなコントラスト。\n\n大雑把な構造を、包み込み。\n\n「高周波成分」が、鋭いエッジと輪郭。\n\nさあ、画像工学の、核心を掴むずら！\n\nサインの奇関数も、コサインの偶関数も、完璧ずら！\n\n低周波のコントラストも、高周波のエッジも、\n\n逃さないずら！\n\nすべては、画素と波が織りなす、メディカル・アートずら！\n\n4階調の2ビットから、256階調の1バイトまで。\n\n国試の重要ワードで、未来の医療を照らし出すずら！" },
+    { id: 2, unit: 1, band: "第02班", subject: "標本化と量子化とデータ量", song: "滑らかさを守り抜け",
+      youtube: "Lson9iKumjE",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "【Aメロ】\n\n見えないX線の アナログ信号\n\nパソコンで見るため 変換しよう\n\n空間をマス目で 区切る「標本化」\n\n信号の強さを 段階にする「量子化」\n\nこれが画像作りの 大切な第一歩！\n\n【Bメロ】\n\nピクセル刻む 「標本化間隔」\n\n小さくすれば 空間分解能アップのマジック！\n\n濃淡を決める 「量子化間隔」\n\n粗くしちゃうと 不自然な境界線\n\n「量子化誤差」のワナ 滑らかさを守り抜け！\n\n【Cメロ】\n\nどれだけの重さか 計算してみよう\n\n画像のデータ量を 求める方程式\n\n「縦ピクセル数」 かける 「横ピクセル数」\n\nそこに「量子化の階調ビット数」 かけ合わせれば\n\n割り出せるデータ量！8ビットが1バイト\n\n【サビ】\n\nさあ防ごう 邪魔なノイズたち！\n\n「標本化間隔」広いと起きる 「エリアシングエラー」\n\n高周波が低周波に 化けてしまう前に\n\n心に刻む絶対ルール 「サンプリング定理」\n\n正しく細かく サンプリングして\n\nクリアな医療画像を 君の手で！\n\n【Aめろ】\n\nみえないえっくすせんの あなろぐしんごう\n\nぱそこんでみるため へんかんしよう\n\nくうかんをますめで くぎる「ひょうほんか」\n\nしんごうのつよさを だんかいにする「りょうしか」\n\nこれががぞうづくりの たいせつなだいいっぽ！\n\n【Bめろ】\n\nぴくせるきざむ 「ひょうほんかかんかく」\n\nちいさくすれば くうかんぶんかいのうあっぷのまじっく！\n\nのうたんをきめる 「りょうしかかんかく」\n\nあらくしちゃうと ふしぜんなきょうかいせん\n\n「りょうしかごさ」のわな なめらかさをまもりぬけ！\n\n【Cめろ】\n\nどれだけのおもさか けいさんしてみよう\n\nがぞうのでーたりょうを もとめるほうていしき\n\n「たてぴくせるすう」 かける 「よこぴくせるすう」\n\nそこに「りょうしかのかいちょうびっとすう」 かけあわせれば\n\nわりだせるでーたりょう！ はちびっとがいちばいと\n\n【さび】\n\nさあふせごう じゃまな のいずたち！\n\n「ひょうほんかかんかく」ひろいとおきる 「えりあしんぐえらー」\n\nこうしゅうはがていしゅうはに ばけてしまうまえに\n\nこころにきざむぜったいるーる 「さんぷりんぐていり」\n\nただしくこまかく さんぷりんぐして\n\nくりあないりょうがぞうを きみのてで！" },
+    { id: 3, unit: 1, band: "第03班", subject: "フーリエ変換", song: "波の重なり",
+      youtube: "JQwuKEHTcQ0",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "**(1番Aメロ: 線形性)**\n\n画像を分ける波の重なり足し合わせたり 定数を掛けても\n\n計算した通りにそのまま反映される\n\nこれがフーリエ変換基本の「線形性」\n\n**(1番Bメロ: 伸縮性)**\n\nもしも空間の中で大きく広がれば\n\n周波数の世界ではギュッと縮んでいく\n\n相反する不思議なルールの「伸縮性」\n\n波の形をひとつずつ紐解いていく\n\n**(1番サビ)**\n\nオイラーの公式 導くシンメトリー\n\n実数(cos)と虚数(sin)が描き出す軌跡\n\n空間領域から周波数領域(K空間)へ あらゆる波の成分を明らかにする\n\n**(2番Aメロ: 時間シフト・周波数シフト)**\n\n波のスタート位置を少しズラしても 振幅は変わらず\n\n位相が回る「時間シフト」\n\n逆に周波数の世界でズラしてみれば\n\n空間の波が回転する「周波数シフト」\n\n**(2番Bメロ: 畳み込み定理)**\n\n空間領域では重たい「畳み込み」 カーネルを重ね合わせる\n\n複雑な処理も 周波数領域(K空間)へと\n\n変換すればシンプルな「掛け算」に生まれ変わる!\n\n**(2番サビ: 双対性)**\n\n空間と周波数の鏡合わせ「双対性」\n\nまっすぐな「一様関数」は鋭い「デルタ関数」\n\n四角の形の「矩形波関数」波打つ「SinＣ関数」へ\n「ガウス関数」変換してもそのまま「ガウス関数」\nそれぞれが対になって結ばれる美しいシンメトリー\n\n**(アウトロ: パーセバルの定理)**\n\n空間領域で足し上げる 二乗の和は周波数領域の二乗の和と等しくなる\nドメインを超えても保存される総エネルギー\nすべてを美しく結ぶ「パーセバルの定理」" },
+    { id: 4, unit: 1, band: "第04班", subject: "画像処理（空間フィルタ・空間周波数フィルタ）", song: "空間フィルタ三兄弟",
+      youtube: "P0cfZFmPPz8",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "(1番 Aメロ：長男・癒やしの平滑)\n\nざらつくノイズに困ってる？\n\nそんなときは 僕の出番さ 優しく包んで平均化 「平滑フィルタ」のお通りだ！\n\n全部均等の「移動平均」 平滑は最強、でもちょっとボケちゃうね\n\n真ん中重視の「加重平均」 エッジを確保し 綺麗にまとめるよ！\n\n(1番 Bメロ)\n\n突如現る厄介者 スパイク・ごま塩ノイズには 中央値で勝負だ 「メディアン」！\n\nノイズ除去が 僕らの使命\n\n係数の総和は いつでも「1」 元のツルツルを\n\n(1番 サビ)\n\nゆけ！空間フィルタリング！\n\n近傍演算で ピクセルたちを 救い出せ\n\nノイズを消し去る癒やしの力 平滑化フィルタ！\n\n役割違う三兄弟 力を合わせて クリアな画像を 今日も作り出すんだ！\n\n(間奏：約15秒)\n\n(2番 Aメロ：次男・クールな抽出)\n\n暗闇の中から輪郭を探せ 「エッジ抽出」\n\n係数の総和「ゼロ」 平坦な場所は 真っ黒に染める\n\n方向選ぶぜ一次微分（プレウィット、ソーベル）\n\n全方向なら二次微分（ラプラシアン）\n\n(2番 Bメロ：三男・熱血の強調)\n\n輪郭だけじゃ物足りない！ 熱血漢の「エッジ強調」！\n\n元の画像にエッジをプラス ぼやけた世界を 先鋭化させる！シャキ！\n\nラプラシアンの4近傍・8近傍 僕が使えばパワーアップ\n\n係数総和は「ゼロ」じゃない！ 元の姿に力を与えるんだ\n\n(2番 サビ)\n\nゆけ！空間フィルタリング！\n\n近傍演算で ピクセルたちを救い出せ\n\n輪郭見つけるクールな瞳 エッジ抽出！\n\nシャキッと際立つ熱い魂 エッジ強調！\n\n役割違う三兄弟 力を合わせて クリアな画像を 今日も作り出すんだ！\n\n(Cメロ / 展開部)\n\nノイズ除去が 主な仕事の 平滑化\n\n輪郭抽出が 主な仕事の エッジ抽出\n\n鮮鋭化が 主な仕事の エッジ強調\n\n係数の和が「1」か「ゼロ」 たったそれだけの魔法で\n\n画像の世界は こんなにも変わる！\n\n(アウトロ)\n\n今日もマトリックスの平和は守られた… サンキュー、空間フィルタ・ブラザーズ！ （ジャーン！と終わる）" },
+    { id: 5, unit: 1, band: "第05班", subject: "画像処理（階調処理・画像間演算）", song: "レンズの向こう側",
+      youtube: "AktnlnCCcJc",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "ピクセル並ぶ画像データ\n\n横軸・輝度で 縦軸・頻度のヒストグラム\n\n分割した数 階調数\n\nルックアップテーブルでコントロール\n\n一つ目、ウィンドウレベルとウィンドウ幅で ウィンドウ処理\n\n明るさとコントラスト調整\n\n二つ目、ヒストグラムの平坦化で コントラスト向上\n\n三つ目、ダイナミックレンジ圧縮 白飛び・黒つぶれ防ぐ\n\n目指せ！国試の画像処理マスター\n\nボケマスクで鮮鋭化 高周波足して\n\nマルチ周波数でくっきりと\n\n見えない病変映し出せ\n\n足したり引いたりが画像演算\n\n過去と現在の引き算は\n\n経時サブトラクション（テンポラル）\n\n変化したとこ浮き出てくるよ\n\n位置のズレならアフィン変換\n\n回転・拡大・平行移動・せん断\n\n位置ズレなくしていきますよ\n\n非剛体はワーピング\n\nリマスキングとピクセルシフトで影を消し去れ\n\n目指せ！国試の画像処理マスター\n\nボケマスクで鮮鋭化 高周波足して\n\nマルチ周波数でくっきりと\n\n見えない病変映し出せ\n\n高・低電圧エネルギーサブ(トラクション)\n\n骨と軟部を選択抽出\n\n完璧な画像を作り出せ\n\n透視画像はリカーシブフィルタ\n\n前のフレームと加重平均\n\nノイズを下げて被ばく低減\n\n1画素ごとの階調処理\n\n近傍演算 空間フィルタ\n\n全ての知識を武器にして\n\n合格の未来へ走り抜け" },
+    { id: 6, unit: 1, band: "第06班", subject: "画像処理（3次元表示・データ圧縮）", song: "君を再構成",
+      youtube: "0j0MnH9XCJI",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "**君の全貌を再構成**\n\n**【1番・Aメロ】**\n\nオパシティの向こう側 光をシミュレーション\n\n透過と反射 計算の彼方へ 色を割り当てて\n\n命を吹き込むの 内部の構造も\n\nすべてさらけ出して 重たい負荷さえも\n\nこの情熱で ボリュームレンダリング 描き切るから\n\n**【サビ】**\n\n3Dでゲット！ 今すぐキャッチ！ MIPの輝き 最大値を貫いて\n\nMinIPの静寂 最低値をなぞる Window調整 見たい世界だけを\n\n切り出すプロセス 心躍るよ 境界線も\n\n透過してゆく 完璧なビジョンを 見つけ出すのさ\n\n**【2番・Aメロ】**\n\n可逆の記憶 ビットの劣化なし 1/3の圧縮\n\n守り抜く100％ ハフマンの道しるべ 頻度を数えて\n\n非可逆の選択 データは軽く\n\nDCTの周波数 ブロックの境界\n\nウェーブレットの波が 全体を滑らかに\n\nトレードオフの狭間で 愛を探してる\n\n**【サビ】**\n\n3Dでゲット！ 今すぐキャッチ！ MIPの輝き 最大値を貫いて\n\nMinIPの静寂 最低値をなぞる Window調整 見たい世界だけを\n\n切り出すプロセス 心躍るよ 境界線も\n\n透過してゆく 完璧なビジョンを 見つけ出すのさ\n\n**【ブリッジ（展開部）】**\n\n仮想のレンズで 体の中へ 粘膜の色は\n\nわからないけれど 君の全体像を 僕が再構成する 計算が終わるまで 待っていて\n\n**【大サビ】**\n\n3Dでゲット！ 今すぐキャッチ！\n\nMIPの輝き 最大値を貫いて\n\nMinIPの静寂 最低値をなぞる Window調整\n\n見たい世界だけを 切り出すプロセス 心躍るよ\n\n境界線も 透過してゆく 完璧なビジョンを 見つけ出すのさ\n\n**【アウトロ】** スキャンして 圧縮して 保存する 僕らの未来を 今すぐゲット！" },
+    { id: 7, unit: 2, band: "第07班", subject: "画質（撮影条件）", song: "鮮明さの代償",
+      youtube: "e-245calcFE",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "鮮明さの代償\n\nベストパラメーターの秘密　は粒状性の秘密\n\nボケを減らしてくっきり見せたい\n\n「幾何学的不鋭」の計算問題！\n\n焦点サイズは小さく絞って\n焦点とフィルムは小さく絞って\n\n被写体とフィルムの距離はなるべく短く！\n\n被写体とフィルムの距離はなるべく短く！\n\n焦点からフィルムはぐっと離そう！\n焦点からフィルムはぐっと離そう！\n\nこれでシャープな画像の出来上がり！\n\nこれでシャープな画像の出来上がり！\n\n邪魔なもやもや「散乱線」\n\nコントラストを下げる天敵だ\n\n照射野絞って グリッドおいて\n\n被写体と距離を開ける「エアギャップ効果」！\n\nざらつき消え去る粒状性(UP！）\nだけども被ばくも増えちゃうぞ\n\n照射野絞って グリッドおいて\n\n被写体と距離を開ける「エアギャップ法」！\n\nエックス線の量を操る「ｍAS」！\n\n管電流（ｍA）上げればフォトンが満ちて\n\nザラツキ消え去り「粒状性」アップ！だけど「被ばく」も増えちゃうぞ\n\n時間（S）を伸ばしても「粒状性」アップ！だけど「被ばく」もやっぱり増加\n\nおまけに時間が長いと「動きのボケ」まで大きくなる！\n\nシャープにすればノイズが目立つ\n\n両立できないこの悩み それが「トレードオフ」！\n\nベストな画質を見つけ出せ 撮影条件コントロール\n\n計算問題もこれでばっちり 未来の画像情報学！" },
+    { id: 8, unit: 2, band: "第08班", subject: "画質（コントラスト）", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" },
+    { id: 9, unit: 2, band: "第09班", subject: "画質（鮮鋭性）", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" },
+    { id: 10, unit: 2, band: "第10班", subject: "画質（粒状性）", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" },
+    { id: 11, unit: 2, band: "第11班", subject: "画質（総合）", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" },
+    { id: 12, unit: 3, band: "第12班", subject: "刺激反応マトリックス", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" },
+    { id: 13, unit: 3, band: "第13班", subject: "ROCと検定方法", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" },
+    { id: 14, unit: 3, band: "第14班", subject: "AI（人工知能）", song: "",
+      youtube: "",
+      audio: "",
+      lyricsPdf: "",
+      lyrics: "" }
+  ];
+
+  var UNITS = [
+    { id: 1, key: "unit-01", label: "画像工学の基礎", range: "No.01–06" },
+    { id: 2, key: "unit-02", label: "画質を測る",     range: "No.07–11" },
+    { id: 3, key: "unit-03", label: "評価と応用",     range: "No.12–14" }
+  ];
+
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // Googleドライブの共有リンク（/view や uc?...id= など、どの形でも）から
+  // ファイルIDを取り出し、Drive純正プレーヤーで開ける /preview 形式のURLを作る。
+  // → 歌詞PDFは、ドライブの共有リンクをそのまま貼るだけで動くようにするため。
+  function driveFileId(url) {
+    if (!url) return null;
+    var m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : null;
+  }
+  function driveEmbedUrl(id) { return "https://drive.google.com/file/d/" + id + "/preview"; }
+
+  var main = document.getElementById("iesMain");
+  var html = "";
+
+  UNITS.forEach(function (unit) {
+    var tracks = TRACKS.filter(function (t) { return t.unit === unit.id; });
+    html += '<section class="ies-unit" id="' + unit.key + '" data-unit="' + unit.id + '">';
+    html += '<div class="ies-unit-head">';
+    html += '<span class="ies-unit-num">UNIT ' + pad2(unit.id) + '</span>';
+    html += '<span class="ies-unit-label">' + esc(unit.label) + '</span>';
+    html += '<span class="ies-unit-range">' + esc(unit.range) + '</span>';
+    html += '</div>';
+    html += '<div class="ies-grid">';
+
+    tracks.forEach(function (t) {
+      var hasVideo = !!t.youtube;
+      var displayTitle = t.song || t.subject || "";
+      var subjectLabel = t.subject || "";
+
+      html += '<article class="ies-card' + (hasVideo ? '' : ' is-pending-card') + '" data-track-id="' + t.id + '">';
+      html += '<div class="ies-card-top">';
+      html += '<span class="ies-card-no">No.' + pad2(t.id) + '</span>';
+      html += '<div class="ies-card-head-text"><div class="ies-card-song">' + esc(displayTitle) + '</div>';
+      if (t.song) {
+        html += '<span class="ies-card-subject">' + esc(subjectLabel) + '</span>';
+      }
+      html += '<div class="ies-card-band">' + esc(t.band) + '</div></div>';
+      html += '<span class="ies-eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>';
+      html += '</div>';
+
+      html += '<div class="ies-video-wrap">';
+      if (hasVideo) {
+        var ytId = encodeURIComponent(t.youtube);
+        var thumb = "https://i.ytimg.com/vi/" + ytId + "/hqdefault.jpg";
+        html += '<div class="ies-thumb" data-track-id="' + t.id + '" role="button" tabindex="0" aria-label="' + esc(displayTitle) + ' を再生">';
+        html += '<img class="ies-thumb-img" src="' + esc(thumb) + '" data-yt="' + esc(ytId) + '" data-step="0" referrerpolicy="no-referrer" alt="" loading="lazy">';
+        html += '<span class="ies-thumb-play" aria-hidden="true"><svg viewBox="0 0 68 48"><path class="ies-yt-btn" d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.1 34 0 34 0S12.2.1 6.9 1.7C4 2.5 2.3 4.8 1.5 7.7.1 13 0 24 0 24s.1 11 1.5 16.3c.8 2.9 2.5 5.2 5.4 6C12.2 47.9 34 48 34 48s21.8-.1 27.1-1.7c2.9-.8 4.6-3.1 5.4-6C67.9 35 68 24 68 24s-.1-11-1.5-16.3z"></path><path d="M45 24 27 14v20z" fill="#fff"></path></svg></span>';
+        html += '</div>';
+      } else {
+        html += '<div class="ies-pending ies-pending-video">動画 準備中</div>';
+      }
+      html += '</div>';
+
+      html += '<div class="ies-card-actions">';
+      if (hasVideo) {
+        html += '<a class="ies-open-yt" href="https://youtu.be/' + encodeURIComponent(t.youtube) + '" target="_blank" rel="noopener">YouTubeで開く ↗</a>';
+      }
+      if (t.lyrics) {
+        html += '<button type="button" class="ies-lyrics-btn" data-lyrics-track="' + t.id + '">歌詞を見る</button>';
+      } else if (t.lyricsPdf) {
+        var lyricsDriveId = driveFileId(t.lyricsPdf);
+        var lyricsUrl = lyricsDriveId ? driveEmbedUrl(lyricsDriveId) : t.lyricsPdf;
+        html += '<button type="button" class="ies-lyrics-btn" data-lyrics="' + esc(lyricsUrl) + '" data-title="No.' + pad2(t.id) + ' ' + esc(displayTitle) + '">歌詞を見る</button>';
+      } else {
+        html += '<button type="button" class="ies-lyrics-btn" disabled>歌詞 準備中</button>';
+      }
+      html += '</div>';
+
+      html += '</article>';
+    });
+
+    html += '</div></section>';
+  });
+
+  main.innerHTML = html;
+
+  // --- サムネイル読み込みのフォールバック ---
+  // hqdefault が取れない動画（Shortsや一部の限定公開など）や、
+  // 広告ブロッカーで i.ytimg.com がブロックされた場合でもカードが崩れないよう、
+  // 解像度違いのURLを順に試し、それでも駄目なら画像を隠して
+  // 黒背景＋再生ボタンだけのタイルとして見せる。
+  var THUMB_STEPS = [
+    "hqdefault.jpg",   // 480x360（通常はこれで表示される）
+    "mqdefault.jpg",   // 320x180
+    "sddefault.jpg",   // 640x480
+    "0.jpg"            // 最終フォールバック
+  ];
+  main.querySelectorAll(".ies-thumb-img").forEach(function (img) {
+    img.addEventListener("error", function () {
+      var ytId = img.getAttribute("data-yt");
+      var step = parseInt(img.getAttribute("data-step") || "0", 10) + 1;
+      if (ytId && step < THUMB_STEPS.length) {
+        img.setAttribute("data-step", String(step));
+        img.src = "https://i.ytimg.com/vi/" + ytId + "/" + THUMB_STEPS[step];
+      } else {
+        // すべて失敗：画像を隠してタイル表示に切り替える
+        img.classList.add("is-broken");
+        var thumb = img.closest(".ies-thumb");
+        if (thumb) thumb.classList.add("is-noimg");
+      }
+    });
+  });
+
+  // --- YouTube プレーヤー（連続再生・下部バー・歌詞連動） ---
+  var QUEUE = TRACKS.filter(function (t) { return !!t.youtube; });
+
+  var bar = document.getElementById("iesPlayerBar");
+  var barNo = document.getElementById("iesPlayerNo");
+  var barTitle = document.getElementById("iesPlayerTitle");
+  var barBand = document.getElementById("iesPlayerBand");
+  var prevBtn = document.getElementById("iesPrevBtn");
+  var nextBtn = document.getElementById("iesNextBtn");
+  var currentId = null;
+
+  var ytPlayer = null;      // YT.Player インスタンス（曲を切り替えるたびに作り直す）
+  var ytApiReady = false;   // IFrame API 読み込み完了フラグ
+  var pendingLoad = null;   // API準備前に再生要求が来た場合に保持
+  // JavaScript API 経由の再生が使えない環境（Googleサイトの入れ子iframeで
+  // origin検証に失敗しエラー153が出る等）では、一度でも失敗したら
+  // 以降は検証の緩い「素のiframe埋め込み」に切り替える。
+  var forcePlainIframe = false;
+
+  function queueIndex(id) {
+    for (var i = 0; i < QUEUE.length; i++) { if (QUEUE[i].id === id) return i; }
+    return -1;
+  }
+
+  function trackById(id) {
+    for (var i = 0; i < TRACKS.length; i++) { if (TRACKS[i].id === id) return TRACKS[i]; }
+    return null;
+  }
+
+  function setActiveCardUI(id, isPlaying) {
+    main.querySelectorAll(".ies-card").forEach(function (card) {
+      var match = String(card.getAttribute("data-track-id")) === String(id);
+      card.classList.toggle("is-active-track", match);
+      card.classList.toggle("is-playing", match && isPlaying);
+    });
+  }
+
+  function updatePrevNext() {
+    var idx = queueIndex(currentId);
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx < 0 || idx >= QUEUE.length - 1;
+  }
+
+  // プレーヤー用のホスト要素。選択されたカードのサムネイル枠に差し込む
+  var playerHost = document.createElement("div");
+  playerHost.id = "iesYtHost";
+  playerHost.className = "ies-yt-host";
+
+  function mountPlayerInCard(id) {
+    var card = main.querySelector('.ies-card[data-track-id="' + id + '"]');
+    if (!card) return;
+    var wrap = card.querySelector(".ies-video-wrap");
+    if (!wrap) return;
+    // 前の曲のカードのサムネイルを表示に戻し、今の曲のサムネイルを隠す
+    main.querySelectorAll(".ies-video-wrap .ies-thumb").forEach(function (th) { th.style.display = ""; });
+    var thumb = wrap.querySelector(".ies-thumb");
+    if (thumb) thumb.style.display = "none";
+    wrap.appendChild(playerHost);
+  }
+
+  // 素のiframe（JavaScript APIを使わない）で再生する最終フォールバック。
+  // origin検証を必要としないため、Googleサイトの入れ子iframe内でも再生しやすい。
+  // ただし曲の「終了」を検知できないため、自動での次曲送りと歌詞の自動スクロールは
+  // この方式では働かない（前後ボタンでの手動切り替えは可能）。
+
+  // ▼ エラー153対策の要点
+  // エラー153は「埋め込み元を示すReferer情報がYouTubeへ届いていない」ときに出る。
+  // Googleサイトの埋め込みコードは入れ子のiframe内で動くためRefererが落ちやすい。
+  // そこで、
+  //  1) iframeを自前で生成し referrerpolicy を明示してRefererを必ず送らせる
+  //  2) origin / widget_referrer パラメータで埋め込み元を明示的に伝える
+  //  3) ページに <meta name="referrer"> を挿入し、外側の設定で落とされるのを防ぐ
+  //  4) それでもAPI再生が始まらなければ、素のiframe埋め込みへ自動で切り替える
+
+  // (3) Refererを送る設定をこのページ自身に明示しておく
+  (function ensureReferrerMeta() {
+    try {
+      var m = document.createElement("meta");
+      m.name = "referrer";
+      m.content = "strict-origin-when-cross-origin";
+      (document.head || document.documentElement).appendChild(m);
+    } catch (e) {}
+  })();
+
+  // 埋め込みURLを組み立てる（withApi=true ならJS API連携用のパラメータも付ける）
+  function buildEmbedSrc(t, autoplay, withApi) {
+    var p = ["playsinline=1", "rel=0", "modestbranding=1"];
+    if (autoplay) p.push("autoplay=1");
+    if (withApi) {
+      p.push("enablejsapi=1");
+      if (location.origin && /^https?:/.test(location.origin)) {
+        p.push("origin=" + encodeURIComponent(location.origin));
+      }
+      if (location.href && /^https?:/.test(location.href)) {
+        p.push("widget_referrer=" + encodeURIComponent(location.href));
+      }
+    }
+    return "https://www.youtube.com/embed/" + encodeURIComponent(t.youtube) + "?" + p.join("&");
+  }
+
+  // (1) referrerpolicy を明示した iframe を自前で作る
+  function makeIframe(t, autoplay, withApi) {
+    var ifr = document.createElement("iframe");
+    ifr.src = buildEmbedSrc(t, autoplay, withApi);
+    ifr.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    ifr.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+    ifr.setAttribute("allowfullscreen", "");
+    ifr.setAttribute("title", t.song || t.subject || "動画");
+    return ifr;
+  }
+
+  var playStartTimer = null; // API再生の開始を見張るタイマー
+  function clearPlayStartTimer() {
+    if (playStartTimer) { clearTimeout(playStartTimer); playStartTimer = null; }
+  }
+
+  function buildPlainIframe(t, autoplay) {
+    clearPlayStartTimer();
+    if (ytPlayer && ytPlayer.destroy) { try { ytPlayer.destroy(); } catch (e) {} }
+    ytPlayer = null;
+    stopLyricSync();
+    playerHost.innerHTML = "";
+    playerHost.appendChild(makeIframe(t, autoplay, false));
+    setActiveCardUI(currentId, true);
+  }
+
+  // 指定した曲のプレーヤーを、カード内に「作り直して」再生する。
+  // ※ YouTubeのiframeはDOM上で別の場所へ移動させると再読み込みされて
+  //    APIとの接続が切れてしまうため、「移動」ではなく毎回作り直す方式。
+  function createPlayerFor(t, autoplay) {
+    // すでにAPI再生が使えないと分かっている環境では、最初から素のiframeで再生
+    if (forcePlainIframe) { buildPlainIframe(t, autoplay); return; }
+
+    clearPlayStartTimer();
+    if (ytPlayer && ytPlayer.destroy) {
+      try { ytPlayer.destroy(); } catch (e) {}
+    }
+    ytPlayer = null;
+    playerHost.innerHTML = "";
+
+    // (1)(2) referrerpolicy付きのiframeを自前で作り、それにAPIを接続する
+    var ifr = makeIframe(t, autoplay, true);
+    playerHost.appendChild(ifr);
+
+    var started = false;
+    ytPlayer = new YT.Player(ifr, {
+      events: {
+        onStateChange: function (e) {
+          // 1=再生中, 2=一時停止, 0=終了
+          if (e.data === YT.PlayerState.PLAYING) {
+            started = true;
+            clearPlayStartTimer();
+            setActiveCardUI(currentId, true);
+            startLyricSync();
+          } else if (e.data === YT.PlayerState.PAUSED) {
+            started = true;
+            clearPlayStartTimer();
+            setActiveCardUI(currentId, false);
+            stopLyricSync();
+          } else if (e.data === YT.PlayerState.ENDED) {
+            setActiveCardUI(currentId, false);
+            stopLyricSync();
+            var idx = queueIndex(currentId);
+            if (idx > -1 && idx < QUEUE.length - 1) loadTrack(QUEUE[idx + 1].id, true);
+          }
+        },
+        onError: function () {
+          // この方式では再生できないエラー。以降は素のiframe方式に切り替え、
+          // この曲もその場で再生し直す。
+          forcePlainIframe = true;
+          buildPlainIframe(t, autoplay);
+        }
+      }
+    });
+
+    // (4) エラー153はAPIのonErrorに通知されないことがあるため、
+    //     自動再生を要求したのに数秒たっても再生が始まらなければ
+    //     「API再生が拒否された」とみなして素のiframeへ切り替える。
+    if (autoplay) {
+      playStartTimer = setTimeout(function () {
+        if (!started && !forcePlainIframe) {
+          forcePlainIframe = true;
+          buildPlainIframe(t, true);
+        }
+      }, 4000);
+    }
+  }
+
+  // 選択された曲を、そのカードのサムネイル枠内に埋め込んで再生する
+  function loadTrack(id, autoplay) {
+    var idx = queueIndex(id);
+    if (idx === -1) return;
+    var t = QUEUE[idx];
+    currentId = id;
+
+    barNo.textContent = "No." + pad2(t.id);
+    barTitle.textContent = t.song || t.subject || "";
+    barBand.textContent = t.band + (t.subject ? "・" + t.subject : "");
+    bar.classList.add("is-active");
+    bar.setAttribute("aria-hidden", "false");
+    updatePrevNext();
+    setActiveCardUI(id, false);
+
+    if (t.lyrics && lyricsSheet.classList.contains("is-open")) {
+      showLyricsFor(t.id);
+    }
+
+    if ("mediaSession" in navigator) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: t.song || t.subject || "",
+          artist: t.band,
+          album: "画像工学 / 医療画像情報学 サウンドアーカイブ"
+        });
+      } catch (e) {}
+    }
+
+    // プレーヤーを対象カードのサムネイル位置へ設置
+    mountPlayerInCard(id);
+
+    // 連続再生などで画面外のカードに切り替わったら、そのカードまでスクロール
+    var card = main.querySelector('.ies-card[data-track-id="' + id + '"]');
+    if (card && card.scrollIntoView) {
+      card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    if (!ytApiReady) { pendingLoad = { id: id, autoplay: autoplay }; return; }
+    createPlayerFor(t, autoplay);
+  }
+
+  function onThumbActivate(el) {
+    var id = Number(el.getAttribute("data-track-id"));
+    loadTrack(id, true);
+  }
+
+  main.querySelectorAll(".ies-thumb").forEach(function (el) {
+    el.addEventListener("click", function () { onThumbActivate(el); });
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onThumbActivate(el); }
+    });
+  });
+
+  prevBtn.addEventListener("click", function () {
+    var idx = queueIndex(currentId);
+    if (idx > 0) loadTrack(QUEUE[idx - 1].id, true);
+  });
+  nextBtn.addEventListener("click", function () {
+    var idx = queueIndex(currentId);
+    if (idx > -1 && idx < QUEUE.length - 1) loadTrack(QUEUE[idx + 1].id, true);
+  });
+
+  // --- YouTube IFrame API 読み込み ---
+  // グローバルコールバック（APIの読み込みが完了すると呼ばれる）
+  var prevYTCb = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function () {
+    if (typeof prevYTCb === "function") { try { prevYTCb(); } catch (e) {} }
+    ytApiReady = true;
+    if (pendingLoad) {
+      var pl = pendingLoad;
+      pendingLoad = null;
+      var t = QUEUE[queueIndex(pl.id)];
+      if (t) createPlayerFor(t, pl.autoplay);
+    }
+  };
+
+  (function loadYTApi() {
+    if (window.YT && window.YT.Player) { ytApiReady = true; return; }
+    if (!document.getElementById("ies-yt-api")) {
+      var tag = document.createElement("script");
+      tag.id = "ies-yt-api";
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+    }
+  })();
+
+  if ("mediaSession" in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler("play", function () { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); });
+      navigator.mediaSession.setActionHandler("pause", function () { if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo(); });
+      navigator.mediaSession.setActionHandler("previoustrack", function () { prevBtn.click(); });
+      navigator.mediaSession.setActionHandler("nexttrack", function () { nextBtn.click(); });
+    } catch (e) {}
+  }
+
+  // --- 歌詞パネル（再生と連動して自動スクロール） ---
+  var lyricsSheet = document.getElementById("iesLyricsSheet");
+  var lyricsBody = document.getElementById("iesLyricsBody");
+  var lyricsSong = document.getElementById("iesLyricsSong");
+  var lyricsSub = document.getElementById("iesLyricsSub");
+  var syncToggle = document.getElementById("iesSyncToggle");
+  var lyricsTrackId = null;   // 今パネルに表示している曲
+  var autoScroll = true;      // 自動スクロールON/OFF
+  var userScrollHold = 0;     // 手動スクロール後しばらく自動を止めるためのタイムスタンプ
+
+  function renderLyrics(text) {
+    // 【Aメロ】(サビ) などのセクション見出しをバッジ風に装飾する
+    var out = "";
+    text.split("\n").forEach(function (line) {
+      var s = line.trim();
+      if (!s) { out += '<p class="ies-ly-blank"></p>'; return; }
+      // 先頭の ** ** （強調記号）は表示用に取り除く
+      s = s.replace(/\*\*/g, "");
+      if (/^[【\[（(].{1,20}[】\])）]$/.test(s)) {
+        out += '<span class="ies-ly-section">' + esc(s.replace(/^[【\[（(]|[】\])）]$/g, "")) + '</span><br>';
+      } else {
+        out += '<p>' + esc(s) + '</p>';
+      }
+    });
+    lyricsBody.innerHTML = out;
+  }
+
+  function showLyricsFor(id) {
+    var t = trackById(id);
+    if (!t || !t.lyrics) return;
+    lyricsTrackId = id;
+    lyricsSong.textContent = "♪ " + (t.song || "");
+    lyricsSub.textContent = "No." + pad2(t.id) + " " + (t.subject || "") + "／" + t.band;
+    renderLyrics(t.lyrics);
+    lyricsBody.scrollTop = 0;
+    lyricsSheet.classList.add("is-open");
+    lyricsSheet.setAttribute("aria-hidden", "false");
+  }
+
+  function closeLyricsSheet() {
+    lyricsSheet.classList.remove("is-open");
+    lyricsSheet.setAttribute("aria-hidden", "true");
+    lyricsTrackId = null;
+  }
+
+  // 再生位置に合わせて歌詞を比例スクロール
+  // （曲全体の進行度 = 歌詞全体のスクロール位置、とみなす近似方式）
+  var lyricTimer = null;
+  function startLyricSync() {
+    stopLyricSync();
+    lyricTimer = setInterval(function () {
+      if (!autoScroll) return;
+      if (lyricsTrackId === null || lyricsTrackId !== currentId) return;
+      if (!lyricsSheet.classList.contains("is-open")) return;
+      if (Date.now() - userScrollHold < 4000) return;
+      if (!ytPlayer || !ytPlayer.getDuration) return;
+      var dur = ytPlayer.getDuration();
+      var cur = ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0;
+      if (!dur || !isFinite(dur)) return;
+      var progress = cur / dur;
+      var target = progress * (lyricsBody.scrollHeight - lyricsBody.clientHeight);
+      lyricsBody.scrollTop += (target - lyricsBody.scrollTop) * 0.3;
+    }, 400);
+  }
+  function stopLyricSync() {
+    if (lyricTimer) { clearInterval(lyricTimer); lyricTimer = null; }
+  }
+
+  // 手動でスクロールしたら少しのあいだ自動追従を止める（読み返しできるように）
+  ["touchstart", "wheel"].forEach(function (ev) {
+    lyricsBody.addEventListener(ev, function () { userScrollHold = Date.now(); }, { passive: true });
+  });
+
+  syncToggle.addEventListener("click", function () {
+    autoScroll = !autoScroll;
+    syncToggle.classList.toggle("is-on", autoScroll);
+    syncToggle.textContent = autoScroll ? "♪ 自動スクロール ON" : "自動スクロール OFF";
+    if (autoScroll) userScrollHold = 0;
+  });
+
+  document.getElementById("iesLyricsClose").addEventListener("click", closeLyricsSheet);
+
+  main.querySelectorAll("[data-lyrics-track]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = Number(btn.getAttribute("data-lyrics-track"));
+      showLyricsFor(id);
+      // 歌詞を開いた曲がまだ再生されていなければ、その曲を再生開始する
+      if (id !== currentId && queueIndex(id) !== -1) {
+        loadTrack(id, true);
+      }
+    });
+  });
+
+  // --- 歌詞PDFモーダル ---
+  var modal = document.getElementById("iesModal");
+  var frame = document.getElementById("iesModalFrame");
+  var titleEl = document.getElementById("iesModalTitle");
+  var fallback = document.getElementById("iesModalFallback");
+
+  function openLyrics(url, title) {
+    frame.src = url;
+    fallback.href = url;
+    titleEl.textContent = title;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+  }
+  function closeLyrics() {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    frame.src = "";
+  }
+
+  main.querySelectorAll("[data-lyrics]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      openLyrics(btn.getAttribute("data-lyrics"), btn.getAttribute("data-title"));
+    });
+  });
+  document.getElementById("iesModalBackdrop").addEventListener("click", closeLyrics);
+  document.getElementById("iesModalClose").addEventListener("click", closeLyrics);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeLyrics();
+      closeLyricsSheet();
+    }
+  });
+})();
+</script>
